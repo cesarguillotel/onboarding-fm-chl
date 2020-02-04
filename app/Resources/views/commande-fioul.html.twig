@@ -1,0 +1,135 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <style>
+        .case {
+            display: inline-block;
+            margin: 2px !important;
+        }
+
+        .case span {
+            display: inline-block;
+            min-height: 50px;
+            text-transform: capitalize;
+        }
+
+    </style>
+{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col s0 xl4"></div>
+        <div class="col s12 xl10">
+            <form id="commander" method="post" class="col s12">
+                <div class="card blue-grey lighten-5">
+                    <div class="card-content">
+                        <span class="card-title">Commande de fioul</span>
+                        <div class="row">
+                                <div class="row">
+                                    <div class="input-field col s4">
+                                        <i class="material-icons prefix">local_shipping</i>
+                                        <input required id="quantite" name="quantite" type="number" min="{{ constant('QUANTITE_MIN', calendrier_service) }}" max="{{ constant('QUANTITE_MAX', calendrier_service) }}" class="validate">
+                                        <label for="quantite">Quantité</label>
+                                        <span class="helper-text" data-error="{{ constant('ERREUR_QUANTITE_MIN_MAX', calendrier_service) }}" data-success=""></span>
+                                    </div>
+                                    <div class="input-field col s2">
+                                        <label>Litres</label>
+                                    </div>
+                                </div>
+                        </div>
+                        <div class="row" id="calendrier">
+                        </div>
+                    </div>
+                    <div class="card-action center">
+                        <button id="btn-commande" type="submit" class="center btn" >Passer ma commande</button>
+                        <div class="red-text" style="padding-top:10px" id="error">{{ error }}</div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+
+        let calendrier;
+        let enCours = false;
+
+        function afficherCalendrier(calendrier, minRestCapacity) {
+
+            if (!minRestCapacity) minRestCapacity = 0;
+
+            let htmlCalendrier = $('#calendrier');
+            htmlCalendrier.empty();
+
+            for (let i in calendrier) {
+
+                let creneau = calendrier[i];
+
+                let date = new Date(creneau.date);
+                date = date.toLocaleDateString(
+                    'fr-FR',
+                    { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
+                );
+
+                let htmlJour;
+
+                if (creneau.restCapacity && creneau.restCapacity > minRestCapacity) {
+
+                    htmlJour = $('<div class="case card col s3"><label>' +
+                        '      <input required class="" value="'+creneau.id+'" name="creneau" type="radio" /><span>' +
+                        '<div>' + date + '</div>' +
+                        '<div>' + creneau.restCapacity + ' litres</div>' +
+                        '</span></label></div>');
+                }
+                else {
+                    htmlJour = $('<div class="case card col s3 grey lighten-4"><label>' +
+                        '      <input class="" disabled name="creneau" type="radio" /><span>' +
+                        '<div>' + date + '</div>' +
+                        '<div>Complet</div>' +
+                        '</span></label></div>');
+                }
+
+                htmlCalendrier.append(htmlJour);
+            }
+        }
+
+        function chargerCalendrier(quantite) {
+
+            $.get( "{{ path('generer-calendrier', {'postalCode': '92500'}) }}/"+quantite, function( data ) {
+
+                if (data && data.calendrier) {
+                    calendrier = data.calendrier;
+                    afficherCalendrier(data.calendrier);
+                }
+            });
+        }
+
+        function getQuantite() {
+
+            let quantite = $('#quantite').val();
+            quantite = parseInt(quantite);
+            if (!quantite || isNaN(quantite) ||
+            quantite < 500 || quantite > 10000) {
+                return false;
+            }
+            return quantite;
+        }
+
+        $(function() {
+
+            chargerCalendrier(0);
+
+            $('#quantite').on('change', function () {
+
+                let quantite = getQuantite();
+                if (false !== quantite) {
+                    chargerCalendrier(quantite);
+                }
+            });
+
+        });
+
+    </script>
+
+{% endblock %}

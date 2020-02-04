@@ -1,0 +1,31 @@
+# Learn more about services, parameters and containers at
+# https://symfony.com/doc/current/service_container.html
+parameters:
+    #parameter_name: value
+
+services:
+  app.import_service:
+    class:     AppBundle\Service\ImportService
+    arguments:
+      entityManager: "@doctrine.orm.entity_manager"
+      creneauRepository: "@creneau_repository"
+
+  app.calendrier_service:
+    class:     AppBundle\Service\CalendrierService
+    arguments:
+      entityManager: "@doctrine.orm.entity_manager"
+      creneauRepository: "@creneau_repository"
+      dateService: "@app.date_service"
+
+  app.date_service:
+    class:     AppBundle\Service\DateService
+
+  creneau_repository:
+    class: AppBundle\Repository\CreneauRepository
+    factory: ["@doctrine.orm.entity_manager", getRepository]
+    arguments:
+      - AppBundle\Entity\Creneau
+
+    #service_name:
+    #    class: AppBundle\Directory\ClassName
+    #    arguments: ['@another_service_name', 'plain_value', '%parameter_name%']

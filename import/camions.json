@@ -1,0 +1,585 @@
+{
+  "department": "92",
+  "trucks": [
+    {
+      "date": "2020-02-01",
+      "capacity": 9000,
+      "truck": "4CV8F"
+    },
+    {
+      "date": "2020-02-01",
+      "capacity": 4000,
+      "truck": "32F0L"
+    },
+    {
+      "date": "2020-02-01",
+      "capacity": 2500,
+      "truck": "QWX45"
+    },
+    {
+      "date": "2020-02-01",
+      "capacity": 3900,
+      "truck": "SZ588"
+    },
+    {
+      "date": "2020-02-02",
+      "capacity": 12000,
+      "truck": "8Z25M"
+    },
+    {
+      "date": "2020-02-02",
+      "capacity": 4800,
+      "truck": "32F0L"
+    },
+    {
+      "date": "2020-02-02",
+      "capacity": 4700,
+      "truck": "QWX45"
+    },
+    {
+      "date": "2020-02-02",
+      "capacity": 6000,
+      "truck": "SZ588"
+    },
+    {
+      "date": "2020-02-03",
+      "capacity": 12000,
+      "truck": "8Z25M"
+    },
+    {
+      "date": "2020-02-03",
+      "capacity": 4500,
+      "truck": "32F0L"
+    },
+    {
+      "date": "2020-02-03",
+      "capacity": 12000,
+      "truck": "QWX45"
+    },
+    {
+      "date": "2020-02-03",
+      "capacity": 7400,
+      "truck": "SZ588"
+    },
+    {
+      "date": "2020-02-04",
+      "capacity": 3000,
+      "truck": "8Z25M"
+    },
+    {
+      "date": "2020-02-04",
+      "capacity": 7800,
+      "truck": "32F0L"
+    },
+    {
+      "date": "2020-02-04",
+      "capacity": 1400,
+      "truck": "QWX45"
+    },
+    {
+      "date": "2020-02-04",
+      "capacity": 5200,
+      "truck": "SZ588"
+    },
+    {
+      "date": "2020-02-05",
+      "capacity": 3000,
+      "truck": "4CV8F"
+    },
+    {
+      "date": "2020-02-05",
+      "capacity": 6500,
+      "truck": "32F0L"
+    },
+    {
+      "date": "2020-02-05",
+      "capacity": 2200,
+      "truck": "QWX45"
+    },
+    {
+      "date": "2020-02-05",
+      "capacity": 9800,
+      "truck": "SZ588"
+    },
+    {
+      "date": "2020-02-06",
+      "capacity": 3600,
+      "truck": "4CV8F"
+    },
+    {
+      "date": "2020-02-06",
+      "capacity": 8000,
+      "truck": "32F0L"
+    },
+    {
+      "date": "2020-02-06",
+      "capacity": 9600,
+      "truck": "QWX45"
+    },
+    {
+      "date": "2020-02-06",
+      "capacity": 2700,
+      "truck": "SZ588"
+    },
+    {
+      "date": "2020-02-07",
+      "capacity": 7800,
+      "truck": "PMS51"
+    },
+    {
+      "date": "2020-02-07",
+      "capacity": 5000,
+      "truck": "32F0L"
+    },
+    {
+      "date": "2020-02-07",
+      "capacity": 6600,
+      "truck": "QWX45"
+    },
+    {
+      "date": "2020-02-07",
+      "capacity": 12500,
+      "truck": "SZ588"
+    },
+    {
+      "date": "2020-02-08",
+      "capacity": 10000,
+      "truck": "44FK9"
+    },
+    {
+      "date": "2020-02-08",
+      "capacity": 11800,
+      "truck": "32F0L"
+    },
+    {
+      "date": "2020-02-08",
+      "capacity": 4100,
+      "truck": "QWX45"
+    },
+    {
+      "date": "2020-02-08",
+      "capacity": 6500,
+      "truck": "SZ588"
+    },
+    {
+      "date": "2020-02-09",
+      "capacity": 4600,
+      "truck": "8Z25M"
+    },
+    {
+      "date": "2020-02-09",
+      "capacity": 11000,
+      "truck": "32F0L"
+    },
+    {
+      "date": "2020-02-09",
+      "capacity": 5200,
+      "truck": "QWX45"
+    },
+    {
+      "date": "2020-02-09",
+      "capacity": 3100,
+      "truck": "SZ588"
+    },
+    {
+      "date": "2020-02-10",
+      "capacity": 4500,
+      "truck": "4CV8F"
+    },
+    {
+      "date": "2020-02-10",
+      "capacity": 8200,
+      "truck": "32F0L"
+    },
+    {
+      "date": "2020-02-10",
+      "capacity": 2900,
+      "truck": "QWX45"
+    },
+    {
+      "date": "2020-02-10",
+      "capacity": 4000,
+      "truck": "SZ588"
+    },
+    {
+      "date": "2020-02-11",
+      "capacity": 2100,
+      "truck": "4CV8F"
+    },
+    {
+      "date": "2020-02-11",
+      "capacity": 8600,
+      "truck": "32F0L"
+    },
+    {
+      "date": "2020-02-11",
+      "capacity": 4600,
+      "truck": "QWX45"
+    },
+    {
+      "date": "2020-02-11",
+      "capacity": 4400,
+      "truck": "SZ588"
+    },
+    {
+      "date": "2020-02-12",
+      "capacity": 10000,
+      "truck": "8Z25M"
+    },
+    {
+      "date": "2020-02-12",
+      "capacity": 5500,
+      "truck": "32F0L"
+    },
+    {
+      "date": "2020-02-12",
+      "capacity": 3600,
+      "truck": "QWX45"
+    },
+    {
+      "date": "2020-02-12",
+      "capacity": 4800,
+      "truck": "SZ588"
+    },
+    {
+      "date": "2020-02-13",
+      "capacity": 3900,
+      "truck": "8Z25M"
+    },
+    {
+      "date": "2020-02-13",
+      "capacity": 1500,
+      "truck": "32F0L"
+    },
+    {
+      "date": "2020-02-13",
+      "capacity": 6300,
+      "truck": "QWX45"
+    },
+    {
+      "date": "2020-02-13",
+      "capacity": 4600,
+      "truck": "SZ588"
+    },
+    {
+      "date": "2020-02-14",
+      "capacity": 11100,
+      "truck": "8Z25M"
+    },
+    {
+      "date": "2020-02-14",
+      "capacity": 18200,
+      "truck": "32F0L"
+    },
+    {
+      "date": "2020-02-14",
+      "capacity": 8200,
+      "truck": "QWX45"
+    },
+    {
+      "date": "2020-02-14",
+      "capacity": 2000,
+      "truck": "SZ588"
+    },
+    {
+      "date": "2020-02-15",
+      "capacity": 13200,
+      "truck": "44FK9"
+    },
+    {
+      "date": "2020-02-15",
+      "capacity": 12700,
+      "truck": "32F0L"
+    },
+    {
+      "date": "2020-02-15",
+      "capacity": 4500,
+      "truck": "QWX45"
+    },
+    {
+      "date": "2020-02-15",
+      "capacity": 7600,
+      "truck": "SZ588"
+    },
+    {
+      "date": "2020-02-16",
+      "capacity": 3600,
+      "truck": "44FK9"
+    },
+    {
+      "date": "2020-02-16",
+      "capacity": 10000,
+      "truck": "32F0L"
+    },
+    {
+      "date": "2020-02-16",
+      "capacity": 14500,
+      "truck": "QWX45"
+    },
+    {
+      "date": "2020-02-16",
+      "capacity": 3200,
+      "truck": "SZ588"
+    },
+    {
+      "date": "2020-02-17",
+      "capacity": 5300,
+      "truck": "4CV8F"
+    },
+    {
+      "date": "2020-02-17",
+      "capacity": 1900,
+      "truck": "32F0L"
+    },
+    {
+      "date": "2020-02-17",
+      "capacity": 2800,
+      "truck": "QWX45"
+    },
+    {
+      "date": "2020-02-17",
+      "capacity": 8100,
+      "truck": "SZ588"
+    },
+    {
+      "date": "2020-02-18",
+      "capacity": 5200,
+      "truck": "WY8ZD"
+    },
+    {
+      "date": "2020-02-18",
+      "capacity": 10600,
+      "truck": "32F0L"
+    },
+    {
+      "date": "2020-02-18",
+      "capacity": 16000,
+      "truck": "QWX45"
+    },
+    {
+      "date": "2020-02-18",
+      "capacity": 9800,
+      "truck": "SZ588"
+    },
+    {
+      "date": "2020-02-19",
+      "capacity": 9500,
+      "truck": "44FK9"
+    },
+    {
+      "date": "2020-02-19",
+      "capacity": 12300,
+      "truck": "32F0L"
+    },
+    {
+      "date": "2020-02-19",
+      "capacity": 11000,
+      "truck": "QWX45"
+    },
+    {
+      "date": "2020-02-19",
+      "capacity": 12800,
+      "truck": "SZ588"
+    },
+    {
+      "date": "2020-02-20",
+      "capacity": 6000,
+      "truck": "44FK9"
+    },
+    {
+      "date": "2020-02-20",
+      "capacity": 12600,
+      "truck": "32F0L"
+    },
+    {
+      "date": "2020-02-20",
+      "capacity": 1900,
+      "truck": "QWX45"
+    },
+    {
+      "date": "2020-02-20",
+      "capacity": 4800,
+      "truck": "SZ588"
+    },
+    {
+      "date": "2020-02-21",
+      "capacity": 7000,
+      "truck": "8Z25M"
+    },
+    {
+      "date": "2020-02-21",
+      "capacity": 13400,
+      "truck": "32F0L"
+    },
+    {
+      "date": "2020-02-21",
+      "capacity": 950,
+      "truck": "QWX45"
+    },
+    {
+      "date": "2020-02-21",
+      "capacity": 1900,
+      "truck": "SZ588"
+    },
+    {
+      "date": "2020-02-22",
+      "capacity": 2300,
+      "truck": "4CV8F"
+    },
+    {
+      "date": "2020-02-22",
+      "capacity": 16000,
+      "truck": "32F0L"
+    },
+    {
+      "date": "2020-02-22",
+      "capacity": 6900,
+      "truck": "QWX45"
+    },
+    {
+      "date": "2020-02-22",
+      "capacity": 2600,
+      "truck": "SZ588"
+    },
+    {
+      "date": "2020-02-23",
+      "capacity": 2000,
+      "truck": "8Z25M"
+    },
+    {
+      "date": "2020-02-23",
+      "capacity": 990,
+      "truck": "32F0L"
+    },
+    {
+      "date": "2020-02-23",
+      "capacity": 14000,
+      "truck": "QWX45"
+    },
+    {
+      "date": "2020-02-23",
+      "capacity": 19000,
+      "truck": "SZ588"
+    },
+    {
+      "date": "2020-02-24",
+      "capacity": 2000,
+      "truck": "4CV8F"
+    },
+    {
+      "date": "2020-02-24",
+      "capacity": 10100,
+      "truck": "32F0L"
+    },
+    {
+      "date": "2020-02-24",
+      "capacity": 5900,
+      "truck": "QWX45"
+    },
+    {
+      "date": "2020-02-24",
+      "capacity": 900,
+      "truck": "SZ588"
+    },
+    {
+      "date": "2020-02-25",
+      "capacity": 14000,
+      "truck": "PMS51"
+    },
+    {
+      "date": "2020-02-25",
+      "capacity": 10300,
+      "truck": "32F0L"
+    },
+    {
+      "date": "2020-02-25",
+      "capacity": 590,
+      "truck": "QWX45"
+    },
+    {
+      "date": "2020-02-25",
+      "capacity": 2900,
+      "truck": "SZ588"
+    },
+    {
+      "date": "2020-02-26",
+      "capacity": 2300,
+      "truck": "44FK9"
+    },
+    {
+      "date": "2020-02-26",
+      "capacity": 5000,
+      "truck": "32F0L"
+    },
+    {
+      "date": "2020-02-26",
+      "capacity": 8900,
+      "truck": "QWX45"
+    },
+    {
+      "date": "2020-02-26",
+      "capacity": 16000,
+      "truck": "SZ588"
+    },
+    {
+      "date": "2020-02-27",
+      "capacity": 18000,
+      "truck": "PMS51"
+    },
+    {
+      "date": "2020-02-27",
+      "capacity": 880,
+      "truck": "32F0L"
+    },
+    {
+      "date": "2020-02-27",
+      "capacity": 15300,
+      "truck": "QWX45"
+    },
+    {
+      "date": "2020-02-27",
+      "capacity": 13000,
+      "truck": "SZ588"
+    },
+    {
+      "date": "2020-02-28",
+      "capacity": 16000,
+      "truck": "44FK9"
+    },
+    {
+      "date": "2020-02-28",
+      "capacity": 2500,
+      "truck": "32F0L"
+    },
+    {
+      "date": "2020-02-28",
+      "capacity": 6000,
+      "truck": "QWX45"
+    },
+    {
+      "date": "2020-02-28",
+      "capacity": 11000,
+      "truck": "SZ588"
+    },
+    {
+      "date": "2020-02-29",
+      "capacity": 8100,
+      "truck": "4CV8F"
+    },
+    {
+      "date": "2020-02-29",
+      "capacity": 8000,
+      "truck": "32F0L"
+    },
+    {
+      "date": "2020-02-29",
+      "capacity": 18000,
+      "truck": "QWX45"
+    },
+    {
+      "date": "2020-02-20",
+      "capacity": 750,
+      "truck": "SZ588"
+    }
+  ]
+}
