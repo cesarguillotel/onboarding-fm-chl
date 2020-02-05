@@ -4,6 +4,7 @@ namespace AppBundle\Service;
 
 use AppBundle\Entity\Commande;
 use AppBundle\Entity\TruckDay;
+use AppBundle\Manager\CommandManager;
 use AppBundle\Manager\TruckDayManager;
 use Doctrine\ORM\EntityManager;
 
@@ -15,8 +16,8 @@ class CalendarService
     public const QUANTITE_MAX = 10000;
     public const ERREUR_QUANTITE_MIN_MAX = 'Veuillez saisir entre 500 et 10000 Litres';
 
-    /** @var EntityManager */
-    private $entityManager;
+    /** @var CommandManager */
+    private $commandManager;
 
     /** @var TruckDayManager */
     private $truckDayManager;
@@ -24,9 +25,9 @@ class CalendarService
     /** @var DateService */
     private $dateService;
 
-    public function __construct(EntityManager $entityManager, TruckDayManager $truckDayManager, DateService $dateService)
+    public function __construct(TruckDayManager $truckDayManager, CommandManager $commandManager, DateService $dateService)
     {
-        $this->entityManager = $entityManager;
+        $this->commandManager = $commandManager;
         $this->truckDayManager = $truckDayManager;
         $this->dateService = $dateService;
     }
@@ -86,21 +87,10 @@ class CalendarService
     /**
      * @throws \Exception
      */
-    public function commander(int $truckDayId, int $quantite): void
+    public function commander(int $truckDayId, int $quantity): void
     {
-        $truckDay = $this->checkCommand($truckDayId, $quantite);
-        $this->insertCommande($truckDay, $quantite);
-    }
-
-    private function insertCommande(TruckDay $truckDay, int $quantite)
-    {
-        $commande = new Commande();
-        $commande->setQuantite($quantite);
-        $commande->setTruckDay($truckDay);
-        $commande->setDate(new \DateTime());
-
-        $this->entityManager->persist($commande);
-        $this->entityManager->flush();
+        $truckDay = $this->checkCommand($truckDayId, $quantity);
+        $this->commandManager->insertCommand($truckDay, $quantity);
     }
 
     private function getProchainsJoursOuvres(\DateTime $dateCommande): array

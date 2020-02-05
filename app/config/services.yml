@@ -12,8 +12,8 @@ services:
   calendar_service:
     class:     AppBundle\Service\CalendarService
     arguments:
-      entityManager: "@doctrine.orm.entity_manager"
-      creneauManager: "@truckday_manager"
+      truckDayManager: "@truckday_manager"
+      commandManager: "@command_manager"
       dateService: "@date_service"
 
   date_service:
@@ -23,6 +23,11 @@ services:
     class: AppBundle\Manager\TruckDayManager
     arguments:
       truckDayRepository: "@truckday_repository"
+      entityManager: "@doctrine.orm.entity_manager"
+
+  command_manager:
+    class: AppBundle\Manager\CommandManager
+    arguments:
       entityManager: "@doctrine.orm.entity_manager"
 
   truckday_repository:
