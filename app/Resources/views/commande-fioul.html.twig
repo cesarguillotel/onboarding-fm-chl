@@ -29,9 +29,9 @@
                                 <div class="row">
                                     <div class="input-field col s4">
                                         <i class="material-icons prefix">local_shipping</i>
-                                        <input required id="quantite" name="quantite" type="number" min="{{ constant('QUANTITE_MIN', calendrier_service) }}" max="{{ constant('QUANTITE_MAX', calendrier_service) }}" class="validate">
+                                        <input required id="quantite" name="quantity" type="number" min="{{ constant('QUANTITE_MIN', calendar_service) }}" max="{{ constant('QUANTITE_MAX', calendar_service) }}" class="validate">
                                         <label for="quantite">Quantité</label>
-                                        <span class="helper-text" data-error="{{ constant('ERREUR_QUANTITE_MIN_MAX', calendrier_service) }}" data-success=""></span>
+                                        <span class="helper-text" data-error="{{ constant('ERREUR_QUANTITE_MIN_MAX', calendar_service) }}" data-success=""></span>
                                     </div>
                                     <div class="input-field col s2">
                                         <label>Litres</label>
@@ -55,18 +55,18 @@
         let calendrier;
         let enCours = false;
 
-        function afficherCalendrier(calendrier, minRestCapacity) {
+        function afficherCalendrier(calendrier, quantite) {
 
-            if (!minRestCapacity) minRestCapacity = 0;
+            if (!quantite) quantite = 0;
 
             let htmlCalendrier = $('#calendrier');
             htmlCalendrier.empty();
 
             for (let i in calendrier) {
 
-                let creneau = calendrier[i];
+                let truckDay = calendrier[i];
 
-                let date = new Date(creneau.date);
+                let date = new Date(truckDay.date);
                 date = date.toLocaleDateString(
                     'fr-FR',
                     { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
@@ -74,17 +74,17 @@
 
                 let htmlJour;
 
-                if (creneau.restCapacity && creneau.restCapacity > minRestCapacity) {
+                if (truckDay.restCapacity > 0 || (truckDay.restCapacity === 0 && quantite > 0)) {
 
                     htmlJour = $('<div class="case card col s3"><label>' +
-                        '      <input required class="" value="'+creneau.id+'" name="creneau" type="radio" /><span>' +
+                        '      <input required class="" value="'+truckDay.id+'" name="truckDayId" type="radio" /><span>' +
                         '<div>' + date + '</div>' +
-                        '<div>' + creneau.restCapacity + ' litres</div>' +
+                        '<div>' + truckDay.restCapacity + ' litres</div>' +
                         '</span></label></div>');
                 }
                 else {
                     htmlJour = $('<div class="case card col s3 grey lighten-4"><label>' +
-                        '      <input class="" disabled name="creneau" type="radio" /><span>' +
+                        '      <input class="" disabled name="truckDayId" type="radio" /><span>' +
                         '<div>' + date + '</div>' +
                         '<div>Complet</div>' +
                         '</span></label></div>');
@@ -96,11 +96,11 @@
 
         function chargerCalendrier(quantite) {
 
-            $.get( "{{ path('generer-calendrier', {'postalCode': '92500'}) }}/"+quantite, function( data ) {
+            $.get( "{{ path('generate-calendar', {'postalCode': '92500'}) }}/"+quantite, function( data ) {
 
-                if (data && data.calendrier) {
-                    calendrier = data.calendrier;
-                    afficherCalendrier(data.calendrier);
+                if (data && data.calendar) {
+                    calendrier = data.calendar;
+                    afficherCalendrier(data.calendar, quantite);
                 }
             });
         }
@@ -125,6 +125,9 @@
                 let quantite = getQuantite();
                 if (false !== quantite) {
                     chargerCalendrier(quantite);
+                }
+                else if ($('#quantite').val() === '') {
+                    chargerCalendrier(0);
                 }
             });
 

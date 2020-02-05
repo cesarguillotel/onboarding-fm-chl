@@ -1,11 +1,12 @@
 <?php
+
 namespace AppBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ImportCreneauxCommand extends ContainerAwareCommand
+class ImportTruckDayCommand extends ContainerAwareCommand
 {
     protected function configure()
     {
@@ -22,10 +23,10 @@ class ImportCreneauxCommand extends ContainerAwareCommand
     {
         $output->writeln('Import des créneaux');
 
-        $importService = $this->getContainer()->get('app.import_service');
+        $importService = $this->getContainer()->get('truckday_importer');
 
         $importService->importJson();
 
-        $output->writeln($importService->getImportCount() . ' créneaux importés.');
+        $output->writeln($importService->getImportCount().' créneaux importés.');
     }
 }

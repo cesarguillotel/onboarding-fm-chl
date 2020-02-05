@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Service\CalendrierService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -11,90 +10,94 @@ use Symfony\Component\HttpFoundation\Request;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/", name="homepage")
-     */
-    public function indexAction(Request $request)
-    {
-        // replace this example code with whatever you need
-        return $this->render('default/index.html.twig', array(
-            'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
-        ));
-    }
-
-    /**
-     * @Route("/commande-fioul", name="commande")
+     * @Route("/commande-fioul", name="commande", methods={"GET"})
      */
     public function commandeFioulAction(Request $request)
     {
-        $method = $request->getMethod();
+        return $this->render('commande-fioul.html.twig', ['error' => '']);
+    }
+
+    /**
+     * @Route("/commande-fioul", name="commandeValidate", methods={"POST"})
+     */
+    public function commandeFioulValidateAction(Request $request)
+    {
+        $calendarService = $this->container->get('calendar_service');
+
         $error = '';
+        $post = $request->request->all();
 
-        if (strtolower($method) === 'post') {
-            $calendrierService = $this->container->get('app.calendrier_service');
+        try {
+            $truckDay = $calendarService->checkCommand($post['truckDayId'] ?? 0, $post['quantity'] ?? 0);
 
-            $post = $request->request->all();
+            $session = $this->get('session');
+            $session->set('truckDay', $truckDay);
+            $session->set('quantity', $post['quantity']);
 
-            try {
-                $creneau = $calendrierService->checkCommand($post['creneau'] ?? 0, $post['quantite'] ?? 0);
-
-                $session = $this->get('session');
-                $session->set('creneau', $creneau);
-                $session->set('quantite', $post['quantite']);
-
-                return $this->redirectToRoute('confirmation-commande-fioul');
-            }
-            catch (\Exception $exception) {
-                $error = $exception->getMessage();
-            }
+            return $this->redirectToRoute('confirmation-commande');
+        } catch (\Exception $exception) {
+            $error = $exception->getMessage();
         }
 
         return $this->render('commande-fioul.html.twig', ['error' => $error]);
     }
 
     /**
-     * @Route("/confirmation-commande-fioul", name="confirmation-commande-fioul")
+     * @Route("/confirmation-commande-fioul", name="confirmation-commande", methods={"GET"})
      */
-    public function confirmationCommandeFioulAction(Request $request)
+    public function confirmationCommandeAction(Request $request)
     {
-        $method = $request->getMethod();
         $session = $this->get('session');
+        $truckDay = $session->get('truckDay');
+        $quantity = $session->get('quantity');
+
+        return $this->render('confirmation-commande-fioul.html.twig',
+            [
+                'truckDay' => $truckDay,
+                'quantity' => $quantity,
+                'error' => '',
+            ]
+        );
+    }
+
+    /**
+     * @Route("/confirmation-commande-fioul", name="confirmation-commande-validate", methods={"POST"})
+     */
+    public function confirmationCommandeValidateAction(Request $request)
+    {
         $error = '';
+        $session = $this->get('session');
+        $truckDay = $session->get('truckDay');
+        $quantity = $session->get('quantity');
+        $calendarService = $this->container->get('calendar_service');
 
-        $creneau = $session->get('creneau');
-        $quantite = $session->get('quantite');
+        try {
+            $calendarService->commander($truckDay ? $truckDay->getId() : 0, $quantity);
+            $session->getFlashBag()->add('success', 'Merci pour votre commande.');
 
-        $calendrierService = $this->container->get('app.calendrier_service');
-
-        if (strtolower($method) === 'post') {
-            try {
-                $calendrierService->commander($creneau ? $creneau->getId() : 0, $quantite);
-                $session->getFlashBag()->add('success', 'Merci pour votre commande.');
-                return $this->redirectToRoute('confirmation-commande-fioul');
-            }
-            catch (\Exception $exception) {
-                $error = $exception->getMessage();
-            }
+            return $this->redirectToRoute('confirmation-commande');
+        } catch (\Exception $exception) {
+            $error = $exception->getMessage();
         }
 
         return $this->render('confirmation-commande-fioul.html.twig',
             [
-                'creneau' => $creneau,
-                'quantite' => $quantite,
+                'truckDay' => $truckDay,
+                'quantity' => $quantity,
                 'error' => $error,
             ]
         );
     }
 
-
     /**
-     * @Route("/generer-calendrier/{postalCode}/{quantite}", name="generer-calendrier", defaults={"quantite":0})
+     * @Route("/generate-calendar/{postalCode}/{quantity}", name="generate-calendar", defaults={"quantity":0})
      */
-    public function genererCalendrierAction(string $postalCode, int $quantite)
+    public function generateCalendarAction(string $postalCode, int $quantity)
     {
-        $calendrierService = $this->container->get('app.calendrier_service');
+        $calendarService = $this->container->get('calendar_service');
 
-        $calendrier = $calendrierService->generer($postalCode, $quantite);
+        $calendar = $calendarService->generer($postalCode, $quantity);
 
-        return new JsonResponse(['calendrier' => $calendrier]);
+        return new JsonResponse(['calendar' => $calendar]);
     }
 }

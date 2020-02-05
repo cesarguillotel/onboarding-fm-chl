@@ -35,7 +35,7 @@ twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
     globals:
-        calendrier_service: '@app.calendrier_service'
+        calendar_service: '@calendar_service'
 
 # Doctrine Configuration
 doctrine:

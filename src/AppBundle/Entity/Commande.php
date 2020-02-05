@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Commande
+ * Commande.
  *
  * @ORM\Table(name="commande")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CommandeRepository")
@@ -29,12 +29,12 @@ class Commande
     private $quantite;
 
     /**
-     * @var Creneau
+     * @var TruckDay
      *
-     * @ORM\ManyToOne(targetEntity="Creneau", inversedBy="commandes")
-     * @ORM\JoinColumn(name="creneau_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="TruckDay", inversedBy="commandes")
+     * @ORM\JoinColumn(name="truckday_id", referencedColumnName="id")
      */
-    private $creneau;
+    private $truckDay;
 
     /**
      * @var \DateTime
@@ -44,7 +44,7 @@ class Commande
     private $date;
 
     /**
-     * Get id
+     * Get id.
      *
      * @return int
      */
@@ -54,9 +54,9 @@ class Commande
     }
 
     /**
-     * Set quantite
+     * Set quantite.
      *
-     * @param integer $quantite
+     * @param int $quantite
      *
      * @return Commande
      */
@@ -68,7 +68,7 @@ class Commande
     }
 
     /**
-     * Get quantite
+     * Get quantite.
      *
      * @return int
      */
@@ -77,37 +77,23 @@ class Commande
         return $this->quantite;
     }
 
-    /**
-     * @return Creneau
-     */
-    public function getCreneau(): Creneau
+    public function getTruckDay(): TruckDay
     {
-        return $this->creneau;
+        return $this->truckDay;
     }
 
-    /**
-     * @param Creneau $creneau
-     */
-    public function setCreneau(Creneau $creneau)
+    public function setTruckDay(TruckDay $truckDay)
     {
-        $this->creneau = $creneau;
+        $this->truckDay = $truckDay;
     }
 
-    /**
-     * @return \DateTime
-     */
     public function getDate(): \DateTime
     {
         return $this->date;
     }
 
-    /**
-     * @param \DateTime $date
-     */
     public function setDate(\DateTime $date): void
     {
         $this->date = $date;
     }
-
 }
-

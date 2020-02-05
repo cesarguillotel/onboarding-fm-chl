@@ -4,27 +4,32 @@ parameters:
     #parameter_name: value
 
 services:
-  app.import_service:
-    class:     AppBundle\Service\ImportService
+  truckday_importer:
+    class:     AppBundle\Importer\TruckDayImporter
+    arguments:
+      truckDayManager: "@truckday_manager"
+
+  calendar_service:
+    class:     AppBundle\Service\CalendarService
     arguments:
       entityManager: "@doctrine.orm.entity_manager"
-      creneauRepository: "@creneau_repository"
+      creneauManager: "@truckday_manager"
+      dateService: "@date_service"
 
-  app.calendrier_service:
-    class:     AppBundle\Service\CalendrierService
-    arguments:
-      entityManager: "@doctrine.orm.entity_manager"
-      creneauRepository: "@creneau_repository"
-      dateService: "@app.date_service"
-
-  app.date_service:
+  date_service:
     class:     AppBundle\Service\DateService
 
-  creneau_repository:
-    class: AppBundle\Repository\CreneauRepository
+  truckday_manager:
+    class: AppBundle\Manager\TruckDayManager
+    arguments:
+      truckDayRepository: "@truckday_repository"
+      entityManager: "@doctrine.orm.entity_manager"
+
+  truckday_repository:
+    class: AppBundle\Repository\TruckDayRepository
     factory: ["@doctrine.orm.entity_manager", getRepository]
     arguments:
-      - AppBundle\Entity\Creneau
+      - AppBundle\Entity\TruckDay
 
     #service_name:
     #    class: AppBundle\Directory\ClassName

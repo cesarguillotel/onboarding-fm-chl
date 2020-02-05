@@ -2,89 +2,99 @@
 
 namespace AppBundle\Service;
 
-use AppBundle\Entity\Creneau;
-use AppBundle\Repository\CreneauRepository;
-use Doctrine\ORM\EntityManager;
-
 class DateService
 {
+    private $joursFeries;
+
     public function __construct()
     {
-
+        $this->joursFeries = [];
     }
 
-    public function joursFeries($annee, $alsacemoselle = false)
+    public function initJoursFeries(array $annees, bool $alsacemoselle = false): void
     {
-        $joursFeries = [
-            $this->dimanchePaques($annee)
-            ,    $this->lundiPaques($annee)
-            ,    $this->jeudiAscension($annee)
-            ,    $this->lundiPentecote($annee)
+        $this->joursFeries = [];
 
-            ,    "$annee-01-01"        //    Nouvel an
-            ,    "$annee-05-01"        //    Fête du travail
-            ,    "$annee-05-08"        //    Armistice 1945
-            ,    "$annee-05-15"        //    Assomption
-            ,    "$annee-07-14"        //    Fête nationale
-            ,    "$annee-11-11"        //    Armistice 1918
-            ,    "$annee-11-01"        //    Toussaint
-            ,    "$annee-12-25"        //    Noël
-        ];
+        foreach ($annees as $annee) {
+            $this->ajouterJoursFeries($annee, $alsacemoselle);
+        }
+    }
+
+    private function ajouterJoursFeries($annee, $alsacemoselle = false): void
+    {
+        $this->joursFeries[] = $this->dimanchePaques($annee);
+        $this->joursFeries[] = $this->lundiPaques($annee);
+        $this->joursFeries[] = $this->jeudiAscension($annee);
+        $this->joursFeries[] = $this->lundiPentecote($annee);
+        $this->joursFeries[] = "$annee-01-01";
+        $this->joursFeries[] = "$annee-05-01";
+        $this->joursFeries[] = "$annee-05-08";
+        $this->joursFeries[] = "$annee-05-15";
+        $this->joursFeries[] = "$annee-07-14";
+        $this->joursFeries[] = "$annee-11-11";
+        $this->joursFeries[] = "$annee-11-01";
+        $this->joursFeries[] = "$annee-12-25";
 
         if ($alsacemoselle) {
-            $joursFeries[] = "$annee-12-26";
-            $joursFeries[] = $this->vendrediSaint($annee);
+            $this->joursFeries[] = "$annee-12-26";
+            $this->joursFeries[] = $this->vendrediSaint($annee);
         }
-
-        sort($joursFeries);
-        return $joursFeries;
     }
 
-    public function estFerie(\DateTime $date, $alsacemoselle = false)
+    public function estFerie(\DateTime $date, $alsacemoselle = false): bool
     {
         $jour = $date->format('Y-m-d');
-        $annee = $date->format('Y');
-        return in_array($jour, $this->joursFeries($annee, $alsacemoselle));
+
+        if (empty($this->joursFeries)) {
+            $annee = $date->format('Y');
+            $this->ajouterJoursFeries($annee, $alsacemoselle);
+        }
+
+        return in_array($jour, $this->joursFeries, true);
     }
 
-    public function estWeekend(\DateTime $date)
+    public function estWeekend(\DateTime $date): bool
     {
-        $jour = (int)$date->format('w');
-        return $jour === 0 || $jour === 6;
+        $jour = (int) $date->format('w');
+
+        return 0 === $jour || 6 === $jour;
     }
 
-    public function estNonTravaille(\DateTime $dateTime) {
+    public function estNonTravaille(\DateTime $dateTime): bool
+    {
         return $this->estWeekend($dateTime) || $this->estFerie($dateTime);
     }
 
-    private function dimanchePaques($annee)
+    private function dimanchePaques($annee): string
     {
-        return date("Y-m-d", easter_date($annee));
+        return date('Y-m-d', easter_date($annee));
     }
 
-    private function vendrediSaint($annee)
-    {
-        $dimanche_paques = $this->dimanchePaques($annee);
-        return date("Y-m-d", strtotime("$dimanche_paques -2 day"));
-    }
-
-    private function lundiPaques($annee)
+    private function vendrediSaint($annee): string
     {
         $dimanche_paques = $this->dimanchePaques($annee);
-        return date("Y-m-d", strtotime("$dimanche_paques +1 day"));
+
+        return date('Y-m-d', strtotime("$dimanche_paques -2 day"));
     }
 
-    private function jeudiAscension($annee)
+    private function lundiPaques($annee): string
     {
         $dimanche_paques = $this->dimanchePaques($annee);
-        return date("Y-m-d", strtotime("$dimanche_paques +39 day"));
+
+        return date('Y-m-d', strtotime("$dimanche_paques +1 day"));
     }
 
-    private function lundiPentecote($annee)
+    private function jeudiAscension($annee): string
     {
         $dimanche_paques = $this->dimanchePaques($annee);
-        return date("Y-m-d", strtotime("$dimanche_paques +50 day"));
+
+        return date('Y-m-d', strtotime("$dimanche_paques +39 day"));
     }
 
+    private function lundiPentecote($annee): string
+    {
+        $dimanche_paques = $this->dimanchePaques($annee);
 
+        return date('Y-m-d', strtotime("$dimanche_paques +50 day"));
+    }
 }

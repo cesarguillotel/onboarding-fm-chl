@@ -5,12 +5,12 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Creneau
+ * TruckDay.
  *
- * @ORM\Table(name="creneau")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\CreneauRepository")
+ * @ORM\Table(name="truckday")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\TruckDayRepository")
  */
-class Creneau
+class TruckDay
 {
     /**
      * @var int
@@ -50,7 +50,12 @@ class Creneau
     private $postalCode;
 
     /**
-     * Get id
+     * @var int
+     */
+    private $restCapacity;
+
+    /**
+     * Get id.
      *
      * @return int
      */
@@ -60,11 +65,11 @@ class Creneau
     }
 
     /**
-     * Set date
+     * Set date.
      *
      * @param \DateTime $date
      *
-     * @return Creneau
+     * @return TruckDay
      */
     public function setDate($date)
     {
@@ -74,7 +79,7 @@ class Creneau
     }
 
     /**
-     * Get date
+     * Get date.
      *
      * @return \DateTime
      */
@@ -84,11 +89,11 @@ class Creneau
     }
 
     /**
-     * Set truck
+     * Set truck.
      *
      * @param string $truck
      *
-     * @return Creneau
+     * @return TruckDay
      */
     public function setTruck($truck)
     {
@@ -98,7 +103,7 @@ class Creneau
     }
 
     /**
-     * Get truck
+     * Get truck.
      *
      * @return string
      */
@@ -108,11 +113,11 @@ class Creneau
     }
 
     /**
-     * Set capacity
+     * Set capacity.
      *
-     * @param integer $capacity
+     * @param int $capacity
      *
-     * @return Creneau
+     * @return TruckDay
      */
     public function setCapacity($capacity)
     {
@@ -122,7 +127,7 @@ class Creneau
     }
 
     /**
-     * Get capacity
+     * Get capacity.
      *
      * @return int
      */
@@ -132,11 +137,11 @@ class Creneau
     }
 
     /**
-     * Set postalCode
+     * Set postalCode.
      *
      * @param string $postalCode
      *
-     * @return Creneau
+     * @return TruckDay
      */
     public function setPostalCode($postalCode)
     {
@@ -146,7 +151,7 @@ class Creneau
     }
 
     /**
-     * Get postalCode
+     * Get postalCode.
      *
      * @return string
      */
@@ -154,5 +159,26 @@ class Creneau
     {
         return $this->postalCode;
     }
-}
 
+    public function getRestCapacity(): int
+    {
+        return $this->restCapacity;
+    }
+
+    public function setRestCapacity(int $restCapacity): void
+    {
+        $this->restCapacity = $restCapacity;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'date' => $this->getDate()->format('Y-m-d'),
+            'truck' => $this->getTruck(),
+            'capacity' => $this->getCapacity(),
+            'postalCode' => $this->getPostalCode(),
+            'restCapacity' => $this->getRestCapacity(),
+        ];
+    }
+}
