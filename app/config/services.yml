@@ -7,14 +7,14 @@ services:
   truckday_importer:
     class:     AppBundle\Importer\TruckDayImporter
     arguments:
-      truckDayManager: "@truckday_manager"
+      truckDayManager: '@truckday_manager'
 
   calendar_service:
     class:     AppBundle\Service\CalendarService
     arguments:
-      truckDayManager: "@truckday_manager"
-      commandManager: "@command_manager"
-      dateService: "@date_service"
+      truckDayManager: '@truckday_manager'
+      commandManager: '@command_manager'
+      dateService: '@date_service'
 
   date_service:
     class:     AppBundle\Service\DateService
@@ -22,20 +22,16 @@ services:
   truckday_manager:
     class: AppBundle\Manager\TruckDayManager
     arguments:
-      truckDayRepository: "@truckday_repository"
-      entityManager: "@doctrine.orm.entity_manager"
+      truckDayRepository: '@truckday_repository'
+      entityManager: '@doctrine.orm.entity_manager'
 
   command_manager:
     class: AppBundle\Manager\CommandManager
     arguments:
-      entityManager: "@doctrine.orm.entity_manager"
+      entityManager: '@doctrine.orm.entity_manager'
 
   truckday_repository:
     class: AppBundle\Repository\TruckDayRepository
-    factory: ["@doctrine.orm.entity_manager", getRepository]
+    factory: ['@doctrine.orm.entity_manager', getRepository]
     arguments:
       - AppBundle\Entity\TruckDay
-
-    #service_name:
-    #    class: AppBundle\Directory\ClassName
-    #    arguments: ['@another_service_name', 'plain_value', '%parameter_name%']

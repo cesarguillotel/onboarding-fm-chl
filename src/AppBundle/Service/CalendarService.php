@@ -2,11 +2,9 @@
 
 namespace AppBundle\Service;
 
-use AppBundle\Entity\Commande;
 use AppBundle\Entity\TruckDay;
 use AppBundle\Manager\CommandManager;
 use AppBundle\Manager\TruckDayManager;
-use Doctrine\ORM\EntityManager;
 
 class CalendarService
 {
@@ -100,8 +98,8 @@ class CalendarService
         $date->modify('+'.(self::NB_JOURS_APRES_COMMANDE - 1).' day');
 
         $annees = [$date->format('Y')];
-        if ($date->format('m') === '12') {
-            $annees[] = ((int)$annees[0]) + 1;
+        if ('12' === $date->format('m')) {
+            $annees[] = ((int) $annees[0]) + 1;
         }
 
         $this->dateService->initJoursFeries($annees);
