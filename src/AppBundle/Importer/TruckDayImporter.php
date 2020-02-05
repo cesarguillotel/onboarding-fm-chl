@@ -35,9 +35,9 @@ class TruckDayImporter
     {
         $this->importCount = 0;
 
-        $jsonCamions = $this->parseJson(self::PATH.self::JSON_TRUCKS);
+        $jsonTrucks = $this->parseJson(self::PATH.self::JSON_TRUCKS);
 
-        $this->parseTrucksDictionaryCapacity($jsonCamions);
+        $this->parseTrucksDictionaryCapacity($jsonTrucks);
 
         $jsonTruckDays = $this->parseJson(self::PATH.self::JSON_TRUCKDAYS);
 
@@ -80,22 +80,22 @@ class TruckDayImporter
         return $this->truckDictionaryCapacity[$date.$truck] ?? null;
     }
 
-    private function parseTrucksDictionaryCapacity(array $jsonCamions): void
+    private function parseTrucksDictionaryCapacity(array $jsonTrucks): void
     {
         $this->truckDictionaryCapacity = [];
 
-        if (empty($jsonCamions['trucks'])) {
+        if (empty($jsonTrucks['trucks'])) {
             return;
         }
 
-        foreach ($jsonCamions['trucks'] as $camion) {
-            if (empty($camion['date']) || empty($camion['capacity']) || empty($camion['truck'])) {
+        foreach ($jsonTrucks['trucks'] as $truck) {
+            if (empty($truck['date']) || empty($truck['capacity']) || empty($truck['truck'])) {
                 continue;
             }
 
-            $key = $camion['date'].$camion['truck'];
+            $key = $truck['date'].$truck['truck'];
 
-            $this->truckDictionaryCapacity[$key] = (int) $camion['capacity'];
+            $this->truckDictionaryCapacity[$key] = (int) $truck['capacity'];
         }
     }
 
