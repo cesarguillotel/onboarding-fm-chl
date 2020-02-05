@@ -39,24 +39,24 @@ class TruckDayImporter
 
         $this->parseTrucksDictionaryCapacity($jsonCamions);
 
-        $jsonCreneaux = $this->parseJson(self::PATH.self::JSON_TRUCKDAYS);
+        $jsonTruckDays = $this->parseJson(self::PATH.self::JSON_TRUCKDAYS);
 
-        $this->createCreneauxEntities($jsonCreneaux);
+        $this->createTruckDayEntities($jsonTruckDays);
     }
 
-    private function createCreneauxEntities(array $jsonCreneaux): void
+    private function createTruckDayEntities(array $jsonTruckDays): void
     {
-        if (empty($jsonCreneaux['postal_code'])) {
-            throw new \UnexpectedValueException('Creneaux error : Empty postal_code in JSON');
+        if (empty($jsonTruckDays['postal_code'])) {
+            throw new \UnexpectedValueException('TruckDay error : Empty postal_code in JSON');
         }
 
-        if (empty($jsonCreneaux['slots'])) {
+        if (empty($jsonTruckDays['slots'])) {
             return;
         }
 
-        $codePostal = $jsonCreneaux['postal_code'];
+        $codePostal = $jsonTruckDays['postal_code'];
 
-        foreach ($jsonCreneaux['slots'] as $slot) {
+        foreach ($jsonTruckDays['slots'] as $slot) {
             if (empty($slot['date']) || empty($slot['truck'])) {
                 continue;
             }

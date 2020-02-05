@@ -11,7 +11,7 @@ class ImportTruckDayCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('app:import-creneaux')
+            ->setName('app:import-truckdays')
 
             ->setDescription('Importe les créneaux des camions de livraison.')
 
