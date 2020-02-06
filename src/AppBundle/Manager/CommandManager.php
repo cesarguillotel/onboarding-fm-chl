@@ -23,15 +23,11 @@ class CommandManager
     /** @var TruckDayRepository */
     private $truckDayRepository;
 
-    /** @var CommandeRepository */
-    private $commandRepository;
-
-    public function __construct(EntityManager $entityManager, TruckDayRepository $truckDayRepository, CommandeRepository $commandRepository, CalendarService $calendarService)
+    public function __construct(EntityManager $entityManager, TruckDayRepository $truckDayRepository, CalendarService $calendarService)
     {
         $this->entityManager = $entityManager;
         $this->calendarService = $calendarService;
         $this->truckDayRepository = $truckDayRepository;
-        $this->commandRepository = $commandRepository;
     }
 
     /**
