@@ -4,11 +4,11 @@ namespace AppBundle\Repository;
 
 class TruckDayRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function findWithRestCapacity(\DateTime $date, string $postalCode, int $minRestCapacity = 0)
+    public function findWithRestCapacity(\DateTime $date, string $postalCode)
     {
         return $this->getEntityManager()
             ->createQuery(
-                'SELECT td, (td.capacity - SUM(co.quantite)) AS restCapacity 
+                'SELECT td, (td.capacity - SUM(co.quantity)) AS restCapacity 
                     FROM AppBundle:TruckDay td
                     LEFT JOIN AppBundle:Commande co WITH td.id = co.truckDay
                     where td.date = :date
@@ -19,11 +19,11 @@ class TruckDayRepository extends \Doctrine\ORM\EntityRepository
             ->getSingleResult();
     }
 
-    public function findByIdWithRestCapacity(int $id, int $minRestCapacity = 0)
+    public function findByIdWithRestCapacity(int $id)
     {
         return $this->getEntityManager()
             ->createQuery(
-                'SELECT td, (td.capacity - SUM(co.quantite)) AS restCapacity 
+                'SELECT td, (td.capacity - SUM(co.quantity)) AS restCapacity 
                     FROM AppBundle:TruckDay td
                     LEFT JOIN AppBundle:Commande co WITH td.id = co.truckDay
                     where td.id = :id'

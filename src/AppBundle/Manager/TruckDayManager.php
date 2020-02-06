@@ -29,9 +29,9 @@ class TruckDayManager
         $result = null;
 
         if (null !== $id) {
-            $result = $this->truckDayRepository->findByIdWithRestCapacity($id, $minRestCapacity);
+            $result = $this->truckDayRepository->findByIdWithRestCapacity($id);
         } elseif (null !== $date && null !== $postalCode) {
-            $result = $this->truckDayRepository->findWithRestCapacity($date, $postalCode, $minRestCapacity);
+            $result = $this->truckDayRepository->findWithRestCapacity($date, $postalCode);
         }
 
         if (!empty($result[0])) {

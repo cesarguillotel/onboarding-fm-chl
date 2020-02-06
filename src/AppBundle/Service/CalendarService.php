@@ -8,11 +8,13 @@ use AppBundle\Manager\TruckDayManager;
 
 class CalendarService
 {
-    public const NB_JOURS_APRES_COMMANDE = 2;
-    public const NB_JOURS_CALENDAR = 6;
-    public const QUANTITE_MIN = 500;
-    public const QUANTITE_MAX = 10000;
-    public const ERREUR_QUANTITE_MIN_MAX = 'Veuillez saisir entre 500 et 10000 Litres';
+    public const DAYS_COUNT_AFTER_COMMAND = 2;
+    public const DAYS_COUNT_CALENDAR = 6;
+    public const QUANTITY_MIN = 500;
+    public const QUANTITY_MAX = 10000;
+    public const ERROR_QUANTITY_MIN_MAX = 'Veuillez saisir entre 500 et 10000 Litres';
+    public const ERROR_UNAVAILABLE_QUANTITY = 'Créneau non disponible pour cette quantité.';
+    public const ERROR_UNAVAILABLE_DAY = 'Date non disponible.';
 
     /** @var CommandManager */
     private $commandManager;
@@ -30,25 +32,26 @@ class CalendarService
         $this->dateService = $dateService;
     }
 
-    public function generer($postalCode, int $quantite, \DateTime $dateCommande = null): array
+    public function generate($postalCode, int $quantity, \DateTime $commandDate = null): array
     {
-        if (null === $dateCommande) {
-            $dateCommande = new \DateTime();
+        if (null === $commandDate) {
+            $commandDate = new \DateTime();
         }
 
-        $joursOuvres = $this->getProchainsJoursOuvres($dateCommande);
+        $workingDays = $this->getNextWorkingDays($commandDate);
 
         $calendar = [];
 
-        foreach ($joursOuvres as $jour) {
+        foreach ($workingDays as $day) {
+
             /** @var TruckDay $truckDay */
-            $truckDay = $this->truckDayManager->getTruckDayWithRestCapacity(null, $jour, $postalCode, $quantite);
+            $truckDay = $this->truckDayManager->getTruckDayWithRestCapacity(null, $day, $postalCode, $quantity);
 
             if (null !== $truckDay) {
                 $calendar[] = $truckDay->toArray();
             } else {
                 $calendar[] = [
-                    'date' => $jour->format('Y-m-d'),
+                    'date' => $day->format('Y-m-d'),
                 ];
             }
         }
@@ -59,24 +62,24 @@ class CalendarService
     /**
      * @throws \Exception
      */
-    public function checkCommand(int $truckDayId, int $quantite): TruckDay
+    public function checkCommand(int $truckDayId, int $quantity): TruckDay
     {
-        if ($quantite < self::QUANTITE_MIN || $quantite > self::QUANTITE_MAX) {
-            throw new \Exception(self::ERREUR_QUANTITE_MIN_MAX);
+        if ($quantity < self::QUANTITY_MIN || $quantity > self::QUANTITY_MAX) {
+            throw new \Exception(self::ERROR_QUANTITY_MIN_MAX);
         }
 
         /** @var TruckDay $truckDay */
-        $truckDay = $this->truckDayManager->getTruckDayWithRestCapacity($truckDayId, null, null, $quantite);
+        $truckDay = $this->truckDayManager->getTruckDayWithRestCapacity($truckDayId, null, null, $quantity);
 
-        if (null === $truckDay) {
-            throw new \Exception('Créneau non disponible pour cette quantité.');
+        if (null === $truckDay || $truckDay->getRestCapacity() < 0) {
+            throw new \Exception(self::ERROR_UNAVAILABLE_QUANTITY);
         }
 
-        $dateCommande = new \DateTime();
-        $joursOuvres = $this->getProchainsJoursOuvres($dateCommande);
+        $commandDate = new \DateTime();
+        $workingDays = $this->getNextWorkingDays($commandDate);
 
-        if (!\in_array($truckDay->getDate(), $joursOuvres)) {
-            throw new \Exception('Date non disponible.');
+        if (!\in_array($truckDay->getDate(), $workingDays, false)) {
+            throw new \Exception(self::ERROR_UNAVAILABLE_DAY);
         }
 
         return $truckDay;
@@ -85,38 +88,38 @@ class CalendarService
     /**
      * @throws \Exception
      */
-    public function commander(int $truckDayId, int $quantity): void
+    public function command(int $truckDayId, int $quantity): void
     {
         $truckDay = $this->checkCommand($truckDayId, $quantity);
         $this->commandManager->insertCommand($truckDay, $quantity);
     }
 
-    private function getProchainsJoursOuvres(\DateTime $dateCommande): array
+    private function getNextWorkingDays(\DateTime $commandDate): array
     {
-        $jours = [];
-        $date = new \DateTime($dateCommande->format('Y-m-d'));
-        $date->modify('+'.(self::NB_JOURS_APRES_COMMANDE - 1).' day');
+        $days = [];
+        $date = new \DateTime($commandDate->format('Y-m-d'));
+        $date->modify('+'.(self::DAYS_COUNT_AFTER_COMMAND - 1).' day');
 
-        $annees = [$date->format('Y')];
+        $years = [$date->format('Y')];
         if ('12' === $date->format('m')) {
-            $annees[] = ((int) $annees[0]) + 1;
+            $years[] = ((int) $years[0]) + 1;
         }
 
-        $this->dateService->initJoursFeries($annees);
+        $this->dateService->initJoursFeries($years);
 
         $i = 0;
-        while ($i < self::NB_JOURS_CALENDAR) {
+        while ($i < self::DAYS_COUNT_CALENDAR) {
             $date->modify('+1 day');
 
             if ($this->dateService->estNonTravaille($date)) {
                 continue;
             }
 
-            $jours[] = $date;
+            $days[] = $date;
             $date = clone $date;
             ++$i;
         }
 
-        return $jours;
+        return $days;
     }
 }

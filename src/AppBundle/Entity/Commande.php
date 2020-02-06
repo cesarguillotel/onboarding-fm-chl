@@ -24,9 +24,9 @@ class Commande
     /**
      * @var int
      *
-     * @ORM\Column(name="quantite", type="integer")
+     * @ORM\Column(name="quantity", type="integer")
      */
-    private $quantite;
+    private $quantity;
 
     /**
      * @var TruckDay
@@ -43,38 +43,21 @@ class Commande
      */
     private $date;
 
-    /**
-     * Get id.
-     *
-     * @return int
-     */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * Set quantite.
-     *
-     * @param int $quantite
-     *
-     * @return Commande
-     */
-    public function setQuantite($quantite)
+    public function setQuantity(int $quantity): Commande
     {
-        $this->quantite = $quantite;
+        $this->quantity = $quantity;
 
         return $this;
     }
 
-    /**
-     * Get quantite.
-     *
-     * @return int
-     */
-    public function getQuantite()
+    public function getQuantity(): int
     {
-        return $this->quantite;
+        return $this->quantity;
     }
 
     public function getTruckDay(): TruckDay
@@ -82,7 +65,7 @@ class Commande
         return $this->truckDay;
     }
 
-    public function setTruckDay(TruckDay $truckDay)
+    public function setTruckDay(TruckDay $truckDay): void
     {
         $this->truckDay = $truckDay;
     }

@@ -19,7 +19,7 @@ class CommandManager
     public function insertCommand(TruckDay $truckDay, int $quantity): void
     {
         $command = new Commande();
-        $command->setQuantite($quantity);
+        $command->setQuantity($quantity);
         $command->setTruckDay($truckDay);
         $command->setDate(new \DateTime());
 

@@ -45,7 +45,7 @@ class TruckDay
     /**
      * @var string
      *
-     * @ORM\Column(name="postalCode", type="string", length=5)
+     * @ORM\Column(name="postal_code", type="string", length=5)
      */
     private $postalCode;
 

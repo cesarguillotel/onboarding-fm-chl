@@ -72,7 +72,7 @@ class DefaultController extends Controller
         $calendarService = $this->container->get('calendar_service');
 
         try {
-            $calendarService->commander($truckDay ? $truckDay->getId() : 0, $quantity);
+            $calendarService->command($truckDay ? $truckDay->getId() : 0, $quantity);
             $session->getFlashBag()->add('success', 'Merci pour votre commande.');
 
             return $this->redirectToRoute('confirmation-commande');
@@ -96,7 +96,7 @@ class DefaultController extends Controller
     {
         $calendarService = $this->container->get('calendar_service');
 
-        $calendar = $calendarService->generer($postalCode, $quantity);
+        $calendar = $calendarService->generate($postalCode, $quantity);
 
         return new JsonResponse(['calendar' => $calendar]);
     }
