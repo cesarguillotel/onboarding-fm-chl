@@ -43,6 +43,13 @@ class Commande
      */
     private $date;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="status", type="string")
+     */
+    private $status;
+
     public function getId(): int
     {
         return $this->id;
@@ -78,5 +85,15 @@ class Commande
     public function setDate(\DateTime $date): void
     {
         $this->date = $date;
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): void
+    {
+        $this->status = $status;
     }
 }

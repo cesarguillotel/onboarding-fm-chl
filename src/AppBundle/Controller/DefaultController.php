@@ -28,7 +28,7 @@ class DefaultController extends Controller
         $post = $request->request->all();
 
         try {
-            $command = $commandManager->createCommand($post['truckDayId'] ?? 0, $post['quantity'] ?? 0);
+            $command = $commandManager->newCommand($post['truckDayId'] ?? 0, $post['quantity'] ?? 0);
 
             $session = $this->get('session');
             $session->set('command', $command);
@@ -60,7 +60,7 @@ class DefaultController extends Controller
         $commandManager = $this->container->get('command_manager');
 
         try {
-            $commandManager->insertCommand($command);
+            $commandManager->doneCommand($command);
             $session->getFlashBag()->add('success', 'Merci pour votre commande.');
 
             return $this->redirectToRoute('confirmation-commande');
