@@ -22,17 +22,16 @@ class DefaultController extends Controller
      */
     public function commandeFioulValidateAction(Request $request)
     {
-        $calendarService = $this->container->get('calendar_service');
+        $commandManager = $this->container->get('command_manager');
 
         $error = '';
         $post = $request->request->all();
 
         try {
-            $truckDay = $calendarService->checkCommand($post['truckDayId'] ?? 0, $post['quantity'] ?? 0);
+            $command = $commandManager->createCommand($post['truckDayId'] ?? 0, $post['quantity'] ?? 0);
 
             $session = $this->get('session');
-            $session->set('truckDay', $truckDay);
-            $session->set('quantity', $post['quantity']);
+            $session->set('command', $command);
 
             return $this->redirectToRoute('confirmation-commande');
         } catch (\Exception $exception) {
@@ -47,17 +46,7 @@ class DefaultController extends Controller
      */
     public function confirmationCommandeAction(Request $request)
     {
-        $session = $this->get('session');
-        $truckDay = $session->get('truckDay');
-        $quantity = $session->get('quantity');
-
-        return $this->render('confirmation-commande-fioul.html.twig',
-            [
-                'truckDay' => $truckDay,
-                'quantity' => $quantity,
-                'error' => '',
-            ]
-        );
+        return $this->render('confirmation-commande-fioul.html.twig', ['error' => '']);
     }
 
     /**
@@ -67,12 +56,11 @@ class DefaultController extends Controller
     {
         $error = '';
         $session = $this->get('session');
-        $truckDay = $session->get('truckDay');
-        $quantity = $session->get('quantity');
-        $calendarService = $this->container->get('calendar_service');
+        $command = $session->get('command');
+        $commandManager = $this->container->get('command_manager');
 
         try {
-            $calendarService->command($truckDay ? $truckDay->getId() : 0, $quantity);
+            $commandManager->insertCommand($command);
             $session->getFlashBag()->add('success', 'Merci pour votre commande.');
 
             return $this->redirectToRoute('confirmation-commande');
@@ -80,13 +68,7 @@ class DefaultController extends Controller
             $error = $exception->getMessage();
         }
 
-        return $this->render('confirmation-commande-fioul.html.twig',
-            [
-                'truckDay' => $truckDay,
-                'quantity' => $quantity,
-                'error' => $error,
-            ]
-        );
+        return $this->render('confirmation-commande-fioul.html.twig', ['error' => $error]);
     }
 
     /**

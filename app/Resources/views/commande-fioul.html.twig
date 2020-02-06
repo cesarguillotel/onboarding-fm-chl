@@ -29,8 +29,8 @@
                                 <div class="row">
                                     <div class="input-field col s4">
                                         <i class="material-icons prefix">local_shipping</i>
-                                        <input required id="quantite" name="quantity" type="number" min="{{ constant('QUANTITY_MIN', calendar_service) }}" max="{{ constant('QUANTITY_MAX', calendar_service) }}" class="validate">
-                                        <label for="quantite">Quantité</label>
+                                        <input required id="quantity" name="quantity" type="number" min="{{ constant('QUANTITY_MIN', calendar_service) }}" max="{{ constant('QUANTITY_MAX', calendar_service) }}" class="validate">
+                                        <label for="quantity">Quantité</label>
                                         <span class="helper-text" data-error="{{ constant('ERROR_QUANTITY_MIN_MAX', calendar_service) }}" data-success=""></span>
                                     </div>
                                     <div class="input-field col s2">
@@ -38,7 +38,7 @@
                                     </div>
                                 </div>
                         </div>
-                        <div class="row" id="calendrier">
+                        <div class="row" id="calendar">
                         </div>
                     </div>
                     <div class="card-action center">
@@ -52,19 +52,18 @@
 
     <script>
 
-        let calendrier;
-        let enCours = false;
+        let inProgress = false;
 
-        function afficherCalendrier(calendrier, quantite) {
+        function displayCalendar(calendar, quantity) {
 
-            if (!quantite) quantite = 0;
+            if (!quantity) quantity = 0;
 
-            let htmlCalendrier = $('#calendrier');
-            htmlCalendrier.empty();
+            let htmlCalendar = $('#calendar');
+            htmlCalendar.empty();
 
-            for (let i in calendrier) {
+            for (let i in calendar) {
 
-                let truckDay = calendrier[i];
+                let truckDay = calendar[i];
 
                 let date = new Date(truckDay.date);
                 date = date.toLocaleDateString(
@@ -72,65 +71,62 @@
                     { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
                 );
 
-                let htmlJour;
+                let htmlDay;
 
-                if (truckDay.restCapacity > 0 || (truckDay.restCapacity === 0 && quantite > 0)) {
+                if (truckDay.restCapacity > 0 || (truckDay.restCapacity === 0 && quantity > 0)) {
 
-                    htmlJour = $('<div class="case card col s3"><label>' +
+                    htmlDay = $('<div class="case card col s3"><label>' +
                         '      <input required class="" value="'+truckDay.id+'" name="truckDayId" type="radio" /><span>' +
                         '<div>' + date + '</div>' +
                         '<div>' + truckDay.restCapacity + ' litres</div>' +
                         '</span></label></div>');
                 }
                 else {
-                    htmlJour = $('<div class="case card col s3 grey lighten-4"><label>' +
+                    htmlDay = $('<div class="case card col s3 grey lighten-4"><label>' +
                         '      <input class="" disabled name="truckDayId" type="radio" /><span>' +
                         '<div>' + date + '</div>' +
                         '<div>Complet</div>' +
                         '</span></label></div>');
                 }
 
-                htmlCalendrier.append(htmlJour);
+                htmlCalendar.append(htmlDay);
             }
         }
 
-        function chargerCalendrier(quantite) {
+        function loadCalendar(quantity) {
 
-            $.get( "{{ path('generate-calendar', {'postalCode': '92500'}) }}/"+quantite, function( data ) {
+            $.get( "{{ path('generate-calendar', {'postalCode': '92500'}) }}/"+quantity, function( data ) {
 
                 if (data && data.calendar) {
-                    calendrier = data.calendar;
-                    afficherCalendrier(data.calendar, quantite);
+                    displayCalendar(data.calendar, quantity);
                 }
             });
         }
 
-        function getQuantite() {
+        function getQuantity() {
 
-            let quantite = $('#quantite').val();
-            quantite = parseInt(quantite);
-            if (!quantite || isNaN(quantite) ||
-            quantite < 500 || quantite > 10000) {
+            let quantity = $('#quantity').val();
+            quantity = parseInt(quantity);
+            if (!quantity || isNaN(quantity) || quantity < 500 || quantity > 10000) {
                 return false;
             }
-            return quantite;
+            return quantity;
         }
 
         $(function() {
 
-            chargerCalendrier(0);
+            loadCalendar(0);
 
-            $('#quantite').on('change', function () {
+            $('#quantity').on('change', function () {
 
-                let quantite = getQuantite();
-                if (false !== quantite) {
-                    chargerCalendrier(quantite);
+                let quantity = getQuantity();
+                if (false !== quantity) {
+                    loadCalendar(quantity);
                 }
-                else if ($('#quantite').val() === '') {
-                    chargerCalendrier(0);
+                else if ($('#quantity').val() === '') {
+                    loadCalendar(0);
                 }
             });
-
         });
 
     </script>

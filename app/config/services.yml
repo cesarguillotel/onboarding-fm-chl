@@ -6,29 +6,23 @@ parameters:
 services:
   truckday_importer:
     class:     AppBundle\Importer\TruckDayImporter
-    arguments:
-      truckDayManager: '@truckday_manager'
+    autowire: true
 
   calendar_service:
     class:     AppBundle\Service\CalendarService
-    arguments:
-      truckDayManager: '@truckday_manager'
-      commandManager: '@command_manager'
-      dateService: '@date_service'
+    autowire: true
 
   date_service:
     class:     AppBundle\Service\DateService
+    autowire: true
 
   truckday_manager:
     class: AppBundle\Manager\TruckDayManager
-    arguments:
-      truckDayRepository: '@truckday_repository'
-      entityManager: '@doctrine.orm.entity_manager'
+    autowire: true
 
   command_manager:
     class: AppBundle\Manager\CommandManager
-    arguments:
-      entityManager: '@doctrine.orm.entity_manager'
+    autowire: true
 
   truckday_repository:
     class: AppBundle\Repository\TruckDayRepository

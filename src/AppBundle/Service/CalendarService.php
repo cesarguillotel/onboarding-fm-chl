@@ -16,18 +16,14 @@ class CalendarService
     public const ERROR_UNAVAILABLE_QUANTITY = 'Créneau non disponible pour cette quantité.';
     public const ERROR_UNAVAILABLE_DAY = 'Date non disponible.';
 
-    /** @var CommandManager */
-    private $commandManager;
-
     /** @var TruckDayManager */
     private $truckDayManager;
 
     /** @var DateService */
     private $dateService;
 
-    public function __construct(TruckDayManager $truckDayManager, CommandManager $commandManager, DateService $dateService)
+    public function __construct(TruckDayManager $truckDayManager, DateService $dateService)
     {
-        $this->commandManager = $commandManager;
         $this->truckDayManager = $truckDayManager;
         $this->dateService = $dateService;
     }
@@ -60,38 +56,29 @@ class CalendarService
     }
 
     /**
-     * @throws \Exception
+     * @return true|string
      */
-    public function checkCommand(int $truckDayId, int $quantity): TruckDay
+    public function checkAvailability(int $truckDayId, int $quantity)
     {
         if ($quantity < self::QUANTITY_MIN || $quantity > self::QUANTITY_MAX) {
-            throw new \Exception(self::ERROR_QUANTITY_MIN_MAX);
+            return self::ERROR_QUANTITY_MIN_MAX;
         }
 
         /** @var TruckDay $truckDay */
         $truckDay = $this->truckDayManager->getTruckDayWithRestCapacity($truckDayId, null, null, $quantity);
 
         if (null === $truckDay || $truckDay->getRestCapacity() < 0) {
-            throw new \Exception(self::ERROR_UNAVAILABLE_QUANTITY);
+            return self::ERROR_UNAVAILABLE_QUANTITY;
         }
 
         $commandDate = new \DateTime();
         $workingDays = $this->getNextWorkingDays($commandDate);
 
         if (!\in_array($truckDay->getDate(), $workingDays, false)) {
-            throw new \Exception(self::ERROR_UNAVAILABLE_DAY);
+            return self::ERROR_UNAVAILABLE_DAY;
         }
 
-        return $truckDay;
-    }
-
-    /**
-     * @throws \Exception
-     */
-    public function command(int $truckDayId, int $quantity): void
-    {
-        $truckDay = $this->checkCommand($truckDayId, $quantity);
-        $this->commandManager->insertCommand($truckDay, $quantity);
+        return true;
     }
 
     private function getNextWorkingDays(\DateTime $commandDate): array
