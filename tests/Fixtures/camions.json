@@ -1,0 +1,25 @@
+{
+  "department": "92",
+  "trucks": [
+    {
+      "date": "2020-02-01",
+      "capacity": 9000,
+      "truck": "4CV8F"
+    },
+    {
+      "date": "2020-02-02",
+      "capacity": 4000,
+      "truck": "32F0L"
+    },
+    {
+      "date": "2020-02-03",
+      "capacity": 2500,
+      "truck": "QWX45"
+    },
+    {
+      "date": "2020-02-05",
+      "capacity": 0,
+      "truck": "EMPTY_TRUCK"
+    }
+  ]
+}

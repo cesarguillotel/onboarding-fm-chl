@@ -3,7 +3,6 @@
 namespace AppBundle\Importer;
 
 use AppBundle\Manager\TruckDayManager;
-use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 
 class TruckDayImporter
 {
@@ -31,15 +30,19 @@ class TruckDayImporter
         return $this->importCount;
     }
 
-    public function importJson(): void
+    /**
+     * @throws \Exception
+     * @throws \UnexpectedValueException
+     */
+    public function importJson(string $path = self::PATH, string $truckFile = self::JSON_TRUCKS, string $truckDayFile = self::JSON_TRUCKDAYS): void
     {
         $this->importCount = 0;
 
-        $jsonTrucks = $this->parseJson(self::PATH.self::JSON_TRUCKS);
+        $jsonTrucks = $this->parseJson($path.$truckFile);
 
         $this->parseTrucksDictionaryCapacity($jsonTrucks);
 
-        $jsonTruckDays = $this->parseJson(self::PATH.self::JSON_TRUCKDAYS);
+        $jsonTruckDays = $this->parseJson($path.$truckDayFile);
 
         $this->createTruckDayEntities($jsonTruckDays);
     }
@@ -99,17 +102,26 @@ class TruckDayImporter
         }
     }
 
+    /**
+     * @throws \Exception
+     * @throws \UnexpectedValueException
+     */
     private function parseJson(string $url): array
     {
-        $fileContent = file_get_contents($url);
+        try {
+            $fileContent = file_get_contents($url);
+        }
+        catch (\Exception $exception) {
+            $fileContent = false;
+        }
 
         if (!$fileContent) {
-            throw new FileNotFoundException('Fichier JSON '.$url.' non trouvé.');
+            throw new \Exception('Fichier JSON '.$url.' impossible à lire.');
         }
 
         $json = json_decode($fileContent, true);
 
-        if (false === $json) {
+        if (empty($json)) {
             throw new \UnexpectedValueException('Fichier JSON '.$url.' invalide.');
         }
 

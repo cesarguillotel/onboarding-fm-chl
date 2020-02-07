@@ -1,0 +1,30 @@
+{
+  "postal_code": "92500",
+  "insee_code": "92063",
+  "month": "02",
+  "slots": [
+    {
+      "date": "2020-02-01",
+      "truck": "4CV8F"
+    },
+    {
+      "date": "2020-02-02",
+      "truck": "32F0L"
+    },
+    {
+      "date": "2020-02-03",
+      "truck": "QWX45"
+    },
+    {
+      "date": "2020-02-04",
+      "truck": "TEST"
+    },
+    {
+      "date": "2020-02-04"
+    },
+    {
+      "date": "2020-02-05",
+      "truck": "EMPTY_TRUCK"
+    }
+  ]
+}

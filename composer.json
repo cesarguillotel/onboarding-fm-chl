@@ -15,11 +15,9 @@
     "require": {
         "php": ">=7.1.33",
         "ext-calendar": "*",
-        "ext-http": "*",
         "ext-json": "*",
         "doctrine/doctrine-bundle": "~1.4",
         "doctrine/orm": "^2.4.8",
-        "friendsofphp/php-cs-fixer": "^2.16",
         "friendsofsymfony/user-bundle": "~2.0",
         "incenteev/composer-parameter-handler": "~2.0",
         "sensio/distribution-bundle": "~4.0",
@@ -31,7 +29,7 @@
     },
     "require-dev": {
         "sensio/generator-bundle": "~3.0",
-        "symfony/phpunit-bridge": "~2.7"
+        "symfony/phpunit-bridge": "*"
     },
     "scripts": {
         "symfony-scripts": [
