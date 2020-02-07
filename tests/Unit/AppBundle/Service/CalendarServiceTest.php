@@ -14,7 +14,7 @@ class CalendarServiceTest extends TestCase
     /** @var TruckDayManager */
     private $truckDayManager;
 
-    /** @var DateService */
+    /** @var DateServiceTest */
     private $dateService;
 
     /** @var CalendarService */

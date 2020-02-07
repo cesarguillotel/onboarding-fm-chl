@@ -26,14 +26,14 @@ class DateService
         $this->joursFeries[] = $this->lundiPaques($annee);
         $this->joursFeries[] = $this->jeudiAscension($annee);
         $this->joursFeries[] = $this->lundiPentecote($annee);
-        $this->joursFeries[] = "$annee-01-01";
-        $this->joursFeries[] = "$annee-05-01";
-        $this->joursFeries[] = "$annee-05-08";
-        $this->joursFeries[] = "$annee-05-15";
-        $this->joursFeries[] = "$annee-07-14";
-        $this->joursFeries[] = "$annee-11-11";
-        $this->joursFeries[] = "$annee-11-01";
-        $this->joursFeries[] = "$annee-12-25";
+        $this->joursFeries[] = "$annee-01-01"; // 1er janvier
+        $this->joursFeries[] = "$annee-05-01"; // Fête du travail
+        $this->joursFeries[] = "$annee-05-08"; // Victoire des alliés
+        $this->joursFeries[] = "$annee-07-14"; // Fête nationale
+        $this->joursFeries[] = "$annee-08-15"; // Assomption
+        $this->joursFeries[] = "$annee-11-01"; // Toussaint
+        $this->joursFeries[] = "$annee-11-11"; // Armistice
+        $this->joursFeries[] = "$annee-12-25"; // Noel
 
         if ($alsacemoselle) {
             $this->joursFeries[] = "$annee-12-26";
@@ -65,9 +65,14 @@ class DateService
         return $this->estWeekend($dateTime) || $this->estFerie($dateTime);
     }
 
-    private function dimanchePaques($annee): string
+
+    private function dimanchePaques($year): string
     {
-        return date('Y-m-d', easter_date($annee));
+        $base = new \DateTime("$year-03-21");
+        $days = easter_days($year);
+
+        $base->add(new \DateInterval("P{$days}D"));
+        return $base->format('Y-m-d');
     }
 
     private function vendrediSaint($annee): string
@@ -79,22 +84,22 @@ class DateService
 
     private function lundiPaques($annee): string
     {
-        $dimanche_paques = $this->dimanchePaques($annee);
+        $dimanchePaques = $this->dimanchePaques($annee);
 
-        return date('Y-m-d', strtotime("$dimanche_paques +1 day"));
+        return date('Y-m-d', strtotime("$dimanchePaques +1 day"));
     }
 
     private function jeudiAscension($annee): string
     {
-        $dimanche_paques = $this->dimanchePaques($annee);
+        $dimanchePaques = $this->dimanchePaques($annee);
 
-        return date('Y-m-d', strtotime("$dimanche_paques +39 day"));
+        return date('Y-m-d', strtotime("$dimanchePaques +39 day"));
     }
 
     private function lundiPentecote($annee): string
     {
-        $dimanche_paques = $this->dimanchePaques($annee);
+        $dimanchePaques = $this->dimanchePaques($annee);
 
-        return date('Y-m-d', strtotime("$dimanche_paques +50 day"));
+        return date('Y-m-d', strtotime("$dimanchePaques +50 day"));
     }
 }
