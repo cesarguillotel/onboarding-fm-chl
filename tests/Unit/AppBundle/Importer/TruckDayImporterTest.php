@@ -9,7 +9,7 @@ use Prophecy\Argument;
 
 class TruckDayImporterTest extends TestCase
 {
-    /** @var TruckDayManager */
+    /** @var TruckDayManagerTest */
     private $truckDayManager;
 
     /** @var TruckDayImporter */

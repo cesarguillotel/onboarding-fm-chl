@@ -25,7 +25,7 @@ class TruckDayManager
         ?\DateTime $date = null,
         ?string $postalCode = null,
         int $minRestCapacity = 0
-    ): TruckDay {
+    ): ?TruckDay {
         $result = null;
 
         if (null !== $id) {
@@ -49,8 +49,9 @@ class TruckDayManager
         return null;
     }
 
-    public function insertOrUpdateTruckDay(\DateTime $dateTime, string $truck, int $capacity, string $postalCode): void
+    public function insertOrUpdateTruckDay(\DateTime $dateTime, string $truck, int $capacity, string $postalCode): ?TruckDay
     {
+        /** @var TruckDay $truckDay */
         $truckDay = $this->truckDayRepository->findOneBy(['date' => $dateTime, 'postalCode' => $postalCode]);
 
         if (null !== $truckDay) {
@@ -66,5 +67,7 @@ class TruckDayManager
 
         $this->entityManager->persist($truckDay);
         $this->entityManager->flush();
+
+        return $truckDay;
     }
 }

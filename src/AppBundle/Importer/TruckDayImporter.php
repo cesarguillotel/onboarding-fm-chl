@@ -110,8 +110,7 @@ class TruckDayImporter
     {
         try {
             $fileContent = file_get_contents($url);
-        }
-        catch (\Exception $exception) {
+        } catch (\Exception $exception) {
             $fileContent = false;
         }
 

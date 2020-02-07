@@ -3,7 +3,6 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\TruckDay;
-use AppBundle\Manager\CommandManager;
 use AppBundle\Manager\TruckDayManager;
 
 class CalendarService
@@ -58,8 +57,12 @@ class CalendarService
     /**
      * @return true|string
      */
-    public function checkAvailability(int $truckDayId, int $quantity)
+    public function checkAvailability(int $truckDayId, int $quantity, \DateTime $commandDate = null)
     {
+        if (null === $commandDate) {
+            $commandDate = new \DateTime();
+        }
+
         if ($quantity < self::QUANTITY_MIN || $quantity > self::QUANTITY_MAX) {
             return self::ERROR_QUANTITY_MIN_MAX;
         }
@@ -71,7 +74,6 @@ class CalendarService
             return self::ERROR_UNAVAILABLE_QUANTITY;
         }
 
-        $commandDate = new \DateTime();
         $workingDays = $this->getNextWorkingDays($commandDate);
 
         if (!\in_array($truckDay->getDate(), $workingDays, false)) {
