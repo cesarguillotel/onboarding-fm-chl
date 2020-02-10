@@ -1,0 +1,3 @@
+default:
+  autoload:
+    '': %paths.base%/tests/Behat/features/bootstrap
