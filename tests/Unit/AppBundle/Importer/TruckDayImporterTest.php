@@ -45,7 +45,8 @@ class TruckDayImporterTest extends TestCase
             ],
         ];
 
-        $this->truckDayImporter->importJson(__DIR__.'../../../../Fixtures/', 'camions.json', 'creneaux.json');
+        $path = __DIR__.'../../../../Fixtures/';
+        $this->truckDayImporter->importJson($path.'camions.json', $path.'creneaux.json');
 
         $this->truckDayManager->insertOrUpdateTruckDay($truckDays[0]['date'], $truckDays[0]['truck'], $truckDays[0]['capacity'], '92500')->shouldBeCalled();
         $this->truckDayManager->insertOrUpdateTruckDay($truckDays[1]['date'], $truckDays[1]['truck'], $truckDays[1]['capacity'], '92500')->shouldBeCalled();
@@ -57,7 +58,8 @@ class TruckDayImporterTest extends TestCase
 
     public function testImportJsonEmpty(): void
     {
-        $this->truckDayImporter->importJson(__DIR__.'../../../../Fixtures/', 'camionsEmptyTrucks.json', 'creneauxEmptySlots.json');
+        $path = __DIR__.'../../../../Fixtures/';
+        $this->truckDayImporter->importJson($path.'camionsEmptyTrucks.json', $path.'creneauxEmptySlots.json');
 
         self::assertSame(0, $this->truckDayImporter->getImportCount());
     }
@@ -67,15 +69,16 @@ class TruckDayImporterTest extends TestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Fichier JSON invalid/path/test.json impossible à lire.');
 
-        $this->truckDayImporter->importJson('invalid/path/', 'test.json', 'test.json');
+        $this->truckDayImporter->importJson('invalid/path/test.json', 'invalid/path/test.json');
     }
 
     public function testJsonImparsable(): void
     {
+        $path = __DIR__.'../../../../Fixtures/';
         $this->expectException(\UnexpectedValueException::class);
-        $this->expectExceptionMessage('Fichier JSON '.__DIR__.'../../../../Fixtures/invalid.json invalide.');
+        $this->expectExceptionMessage('Fichier JSON '.$path.'invalid.json invalide.');
 
-        $this->truckDayImporter->importJson(__DIR__.'../../../../Fixtures/', 'invalid.json', 'invalid.json');
+        $this->truckDayImporter->importJson($path.'invalid.json', $path.'invalid.json');
     }
 
     public function testJsonEmptyPostalCode(): void
@@ -83,6 +86,7 @@ class TruckDayImporterTest extends TestCase
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage('TruckDay error : Empty postal_code in JSON');
 
-        $this->truckDayImporter->importJson(__DIR__.'../../../../Fixtures/', 'camions.json', 'creneauxNoPostalCode.json');
+        $path = __DIR__.'../../../../Fixtures/';
+        $this->truckDayImporter->importJson($path.'camions.json', $path.'creneauxNoPostalCode.json');
     }
 }

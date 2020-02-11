@@ -1,3 +1,27 @@
 default:
   autoload:
     '': %paths.base%/tests/Behat/features/bootstrap
+  extensions:
+    Behat\Symfony2Extension: ~
+    Behat\MinkExtension:
+      base_url: 'http://localhost'
+      browser_name: firefox
+      goutte: ~
+      selenium2: ~
+      sessions:
+        default:
+          goutte: ~
+        javascript_session:
+          selenium2:
+            browser: chrome
+            wd_host: "http://chrome:4444"
+  suites:
+    default:
+      paths:
+        - %paths.base%/tests/Behat/features
+      contexts:
+        - FeatureContext:
+            kernel: '@kernel'
+            session: '@session'
+            entityManager: '@doctrine.orm.default_entity_manager'
+            doctrine: '@doctrine'

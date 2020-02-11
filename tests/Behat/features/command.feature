@@ -1,12 +1,25 @@
-Feature: Import JSON
-  In order to import JSON files of trucks and trucks days
-  As a CRON job
-  I need to put the JSON data into the database
+Feature: Command
+  In order to command fioul
+  As an user
+  I need to be able to command or not in the limited available fioul quantity
 
-  Scenario: Importing JSON files successfully
-    Given there is a "behat_camions.json" into the "tests/Fixtures/" folder wich contains :
-    """
+  Scenario: Try to command fioul quantity too small
+    Given I am on "/commande-fioul"
+    When I fill in "quantity" with "200"
+    And I press "btn-commande"
+    Then I should see "Veuillez saisir entre 500 et 10000 Litres"
 
-    """
-    When I execute the command "app:import-truckdays"
-    Then I shoud have in the database an entry in the "truckday" table with the "date, truck, capacity" columns equals to "2020-02-01, 4CV8F, 9000"
+  Scenario: Try to command fioul quantity too big
+    Given I am on "/commande-fioul"
+    When I fill in "quantity" with "20000"
+    And I press "btn-commande"
+    Then I should see "Veuillez saisir entre 500 et 10000 Litres"
+
+  @javascript
+  Scenario: Command fioul successfull
+    Given I am on "/commande-fioul"
+    When I fill in "quantity" with "2000"
+    And I press "btn-commande"
+    Then I should not see "Veuillez saisir entre 500 et 10000 Litres"
+    Then I wait 1 seconds
+

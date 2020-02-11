@@ -6,9 +6,8 @@ use AppBundle\Manager\TruckDayManager;
 
 class TruckDayImporter
 {
-    private const PATH = 'import/';
-    private const JSON_TRUCKS = 'camions.json';
-    private const JSON_TRUCKDAYS = 'creneaux.json';
+    public const JSON_TRUCKS = 'import/camions.json';
+    public const JSON_TRUCKDAYS = 'import/creneaux.json';
 
     /** @var array */
     private $truckDictionaryCapacity;
@@ -34,15 +33,15 @@ class TruckDayImporter
      * @throws \Exception
      * @throws \UnexpectedValueException
      */
-    public function importJson(string $path = self::PATH, string $truckFile = self::JSON_TRUCKS, string $truckDayFile = self::JSON_TRUCKDAYS): void
+    public function importJson(string $truckFile = self::JSON_TRUCKS, string $truckDayFile = self::JSON_TRUCKDAYS): void
     {
         $this->importCount = 0;
 
-        $jsonTrucks = $this->parseJson($path.$truckFile);
+        $jsonTrucks = $this->parseJson($truckFile);
 
         $this->parseTrucksDictionaryCapacity($jsonTrucks);
 
-        $jsonTruckDays = $this->parseJson($path.$truckDayFile);
+        $jsonTruckDays = $this->parseJson($truckDayFile);
 
         $this->createTruckDayEntities($jsonTruckDays);
     }

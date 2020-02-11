@@ -1,0 +1,40 @@
+version: "2"
+
+services:
+
+  web:
+    image: lavoweb/php-7.1
+    ports:
+      - "80:80"
+    volumes:
+      - ./:/var/www/html/
+      - ./docker/vhost/:/etc/apache2/sites-available/
+    links:
+      - db
+      - chrome
+
+  db:
+    image: mariadb:latest
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: onboarding_fm
+    volumes:
+      - ./mysql:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    links:
+      - db
+    ports:
+      - 8080:80
+
+  chrome:
+    image: selenium/standalone-chrome
+    volumes:
+      - /dev/shm:/dev/shm
+    ports:
+      - 4444:4444
