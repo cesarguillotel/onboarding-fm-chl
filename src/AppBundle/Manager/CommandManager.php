@@ -65,4 +65,12 @@ class CommandManager
         $this->entityManager->persist($command);
         $this->entityManager->flush();
     }
+
+    public function removeCommand(Commande $command): void
+    {
+        $command = $this->entityManager->merge($command);
+
+        $this->entityManager->remove($command);
+        $this->entityManager->flush();
+    }
 }

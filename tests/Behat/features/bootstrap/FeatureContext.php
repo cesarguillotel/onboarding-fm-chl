@@ -74,9 +74,11 @@ class FeatureContext extends MinkContext implements Context
     {
         foreach ($this->cleanEntities as $entity) {
 
+            $entity = $this->entityManager->merge($entity);
             $this->entityManager->remove($entity);
-            $this->entityManager->flush();
         }
+
+        $this->entityManager->flush();
     }
 
     /**
@@ -116,9 +118,9 @@ class FeatureContext extends MinkContext implements Context
     }
 
     /**
-     * @Then /^I shoud have in the database "([^"]*)" entity "([^"]*)" with values:$/
+     * @Then /^I shoud have in the database "([^"]*)" entity "([^"]*)" with values(, and clean it)*:$/
      */
-    public function iShoudHaveInTheDatabaseEntityAppBundleEntityTruckDayWithValues(int $count, string $entity, TableNode $tableNode)
+    public function iShoudHaveInTheDatabaseEntityWithValuesAndCleanIt(int $count, string $entity, string $clean = '', TableNode $tableNode = null)
     {
         $repository = $this->doctrine->getRepository($entity);
 
@@ -130,7 +132,7 @@ class FeatureContext extends MinkContext implements Context
 
         $result = $repository->findBy($search);
 
-        $this->addEntitiesToClean($result);
+        if ($clean) $this->addEntitiesToClean($result);
 
         \PHPUnit\Framework\TestCase::assertCount($count, $result);
     }
@@ -138,9 +140,45 @@ class FeatureContext extends MinkContext implements Context
     /**
      * @Then /^I wait (\d+) seconds$/
      */
-    public function iWaitSeconsd(int $seconds)
+    public function iWaitSeconds(int $seconds)
     {
         $this->getSession()->wait($seconds * 1000);
     }
 
+    /**
+     * @Given /^I have in the database entities "([^"]*)" with values:$/
+     */
+    public function iHaveInTheDatabaseEntitiesWithValues(string $entityName, TableNode $tableNode)
+    {
+        $valuesList = $tableNode->getColumnsHash();
+
+        foreach ($valuesList as $values) {
+
+            $entity = new $entityName();
+
+            foreach ($values as $key => $value) {
+
+                if ('date' === $key) {
+                    $value = new \DateTime($value);
+                }
+
+                $setter = 'set' . ucfirst($key);
+                $entity->$setter($value);
+            }
+
+            $this->entityManager->persist($entity);
+            $this->addEntitiesToClean([$entity]);
+        }
+        $this->entityManager->flush();
+    }
+
+    /**
+     * @When /^I select "([^"]*)" element$/
+     */
+    public function iSelectElement(string $element)
+    {
+        $page = $this->getSession()->getPage();
+        $node = $page->find('css', $element);
+        $node->click();
+    }
 }

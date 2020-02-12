@@ -35,6 +35,6 @@ Feature: Import JSON
     | --trucks    | app/cache/test/behat_camions.json  |
     | --truckdays | app/cache/test/behat_creneaux.json |
     Then the output should contains "1 créneaux importés"
-    Then I shoud have in the database "1" entity "\AppBundle\Entity\TruckDay" with values:
+    Then I shoud have in the database "1" entity "\AppBundle\Entity\TruckDay" with values, and clean it:
     | date       | truck  | capacity |
     | 2020-02-01 | _BEHAT | 9000     |

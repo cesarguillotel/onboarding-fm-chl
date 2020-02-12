@@ -17,15 +17,51 @@ Feature: Command
 
   @javascript
   Scenario: Command fioul successfull
+    Given I have in the database entities "\AppBundle\Entity\TruckDay" with values:
+      | date          | truck  | capacity | postalCode |
+      | today + 2days | _BEHAT | 9000     | 92500      |
+      | today + 3days | _BEHAT | 9000     | 92500      |
+      | today + 4days | _BEHAT | 9000     | 92500      |
+      | today + 5days | _BEHAT | 9000     | 92500      |
+      | today + 6days | _BEHAT | 9000     | 92500      |
     Given I am on "/commande-fioul"
     Then I wait 1 seconds
-    Then I should see "11100 Litres" in the "#calendar-188" element
-    Then I should see "5300 Litres" in the "#calendar-191" element
-    Then I should see "6000 Litres" in the "#calendar-194" element
+    And I should see "9000 Litres" in the ".case" element
     When I fill in "quantity" with "6000"
     And I press "btn-commande"
     Then I wait 1 seconds
-    Then I should see "5100 Litres" in the "#calendar-188" element
-    Then I should see "Complet" in the "#calendar-191" element
-    Then I should see "0 Litres" in the "#calendar-194" element
+    And I should see "3000 Litres" in the ".case" element
+    When I select ".case" element
+    And I press "btn-commande"
+    Then I shoud have in the database "1" entity "\AppBundle\Entity\Commande" with values:
+      | quantity | date  | status      |
+      | 6000     | today | in_progress |
+    And I should be on "/confirmation-commande-fioul"
+    And I should see "6000 Litres" in the ".card-content" element
+    When I press "btn-commande"
+    Then I shoud have in the database "1" entity "\AppBundle\Entity\Commande" with values:
+      | quantity | date  | status |
+      | 6000     | today | done   |
+    And I should be on "/confirmation-commande-fioul"
+    And I should see "Merci pour votre commande." in the ".card-action" element
+    When I follow "Nouvelle commande"
+    And I should be on "/commande-fioul"
+    Then I wait 1 seconds
+    And I should see "3000 Litres" in the ".case" element
 
+  @javascript
+  Scenario: Command fioul full
+    Given I have in the database entities "\AppBundle\Entity\TruckDay" with values:
+      | date          | truck  | capacity | postalCode |
+      | today + 2days | _BEHAT | 1000     | 92500      |
+      | today + 3days | _BEHAT | 1000     | 92500      |
+      | today + 4days | _BEHAT | 1000     | 92500      |
+      | today + 5days | _BEHAT | 1000     | 92500      |
+      | today + 6days | _BEHAT | 1000     | 92500      |
+    Given I am on "/commande-fioul"
+    Then I wait 1 seconds
+    And I should see "1000 Litres" in the ".case" element
+    When I fill in "quantity" with "2000"
+    And I press "btn-commande"
+    Then I wait 1 seconds
+    And I should see "Complet" in the ".case" element

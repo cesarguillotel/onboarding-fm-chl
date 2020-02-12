@@ -32,7 +32,7 @@ class Commande
      * @var TruckDay
      *
      * @ORM\ManyToOne(targetEntity="TruckDay", inversedBy="commandes")
-     * @ORM\JoinColumn(name="truckday_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="truckday_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $truckDay;
 

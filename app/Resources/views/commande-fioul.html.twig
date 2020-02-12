@@ -72,18 +72,17 @@
                 );
 
                 let htmlDay;
-                let id = 'calendar-' + truckDay.id;
 
                 if (truckDay.restCapacity > 0 || (truckDay.restCapacity === 0 && quantity > 0)) {
 
-                    htmlDay = $('<div class="case card col s3" id="' + id + '"><label>' +
+                    htmlDay = $('<div class="case card col s3" ><label>' +
                         '      <input required class="" value="'+truckDay.id+'" name="truckDayId" type="radio" /><span>' +
                         '<div>' + date + '</div>' +
                         '<div>' + truckDay.restCapacity + ' litres</div>' +
                         '</span></label></div>');
                 }
                 else {
-                    htmlDay = $('<div class="case card col s3 grey lighten-4" id="' + id + '"><label>' +
+                    htmlDay = $('<div class="case card col s3 grey lighten-4" ><label>' +
                         '      <input class="" disabled name="truckDayId" type="radio" /><span>' +
                         '<div>' + date + '</div>' +
                         '<div>Complet</div>' +

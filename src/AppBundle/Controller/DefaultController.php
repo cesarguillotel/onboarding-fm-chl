@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Manager\CommandManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,6 +23,7 @@ class DefaultController extends Controller
      */
     public function commandeFioulValidateAction(Request $request)
     {
+        /** @var CommandManager $commandManager */
         $commandManager = $this->container->get('command_manager');
 
         $error = '';
@@ -57,10 +59,35 @@ class DefaultController extends Controller
         $error = '';
         $session = $this->get('session');
         $command = $session->get('command');
+
+        /** @var CommandManager $commandManager */
         $commandManager = $this->container->get('command_manager');
 
         try {
             $commandManager->doneCommand($command);
+            $session->getFlashBag()->add('success', 'Merci pour votre commande.');
+
+            return $this->redirectToRoute('confirmation-commande');
+        } catch (\Exception $exception) {
+            $error = $exception->getMessage();
+        }
+
+        return $this->render('confirmation-commande-fioul.html.twig', ['error' => $error]);
+    }
+
+    /**
+     * @Route("/annuler-commande-fioul", name="cancel-command", methods={"GET"})
+     */
+    public function cancelCommandAction(Request $request)
+    {
+        $session = $this->get('session');
+        $command = $session->get('command');
+
+        /** @var CommandManager $commandManager */
+        $commandManager = $this->container->get('command_manager');
+
+        try {
+            $commandManager->removeCommand($command);
             $session->getFlashBag()->add('success', 'Merci pour votre commande.');
 
             return $this->redirectToRoute('confirmation-commande');

@@ -63,9 +63,9 @@ class TruckDayManager
             $truckDay->setTruck($truck);
             $truckDay->setCapacity($capacity);
             $truckDay->setPostalCode($postalCode);
+            $this->entityManager->persist($truckDay);
         }
 
-        $this->entityManager->persist($truckDay);
         $this->entityManager->flush();
 
         return $truckDay;
